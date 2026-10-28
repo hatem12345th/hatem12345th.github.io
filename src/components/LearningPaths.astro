@@ -1,0 +1,24 @@
+---
+import { learningPaths } from '../data/portfolio';
+---
+<section id="learning" class="section" aria-labelledby="learning-title">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Currently learning</p>
+      <h2 id="learning-title">Where I’m heading next.</h2>
+      <p>Two learning paths I’m exploring alongside my application projects and security practice.</p>
+    </div>
+    <div class="learning-paths">
+      {learningPaths.map(path => (
+        <article class="learning-path">
+          <span class="learning-label">Learning path</span>
+          <h3>{path.name}</h3>
+          <p>{path.description}</p>
+          <ol aria-label={`${path.name} learning topics`}>
+            {path.topics.map(topic => <li>{topic}</li>)}
+          </ol>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

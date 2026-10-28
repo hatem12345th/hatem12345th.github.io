@@ -1,0 +1,68 @@
+<div class="cosmic-background" aria-hidden="true"><canvas id="cosmic-canvas"></canvas></div>
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('#cosmic-canvas');
+  const context = canvas?.getContext('2d');
+  if (canvas && context) {
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    type Particle = { x: number; y: number; vx: number; vy: number; color: string; radius: number };
+    let particles: Particle[] = [];
+    let width = 0;
+    let height = 0;
+    let frame = 0;
+    let lastTime = 0;
+    const colors = ['#a78bfa', '#22d3ee', '#10b981', '#f59e0b'];
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      particles = Array.from({ length: width < 768 ? 40 : 100 }, (_, i) => ({
+        x: Math.random() * width, y: Math.random() * height,
+        vx: (Math.random() - .5) * .6, vy: (Math.random() - .5) * .6,
+        radius: Math.random() * 1.6 + .8, color: colors[i % colors.length],
+      }));
+      paint(0);
+    };
+    const paint = (step: number, time = 0) => {
+      context.clearRect(0, 0, width, height);
+      particles.forEach((p, i) => {
+        p.x = (p.x + p.vx * step + width) % width;
+        p.y = (p.y + p.vy * step + height) % height;
+        context.globalAlpha = .65 + Math.sin(time / 1800 + i) * .2;
+        context.fillStyle = p.color;
+        context.beginPath(); context.arc(p.x, p.y, p.radius, 0, Math.PI * 2); context.fill();
+        if (width > 767) for (let j = i + 1; j < particles.length; j++) {
+          const other = particles[j];
+          const distance = Math.hypot(p.x - other.x, p.y - other.y);
+          if (distance < 150) {
+            context.globalAlpha = (1 - distance / 150) * .28;
+            context.strokeStyle = p.color;
+            context.beginPath(); context.moveTo(p.x, p.y); context.lineTo(other.x, other.y); context.stroke();
+          }
+        }
+      });
+      context.globalAlpha = 1;
+    };
+    const animate = (time: number) => {
+      if (time - lastTime >= 32) {
+        paint(lastTime ? Math.min((time - lastTime) / 16.67, 3) : 1, time);
+        lastTime = time;
+      }
+      frame = requestAnimationFrame(animate);
+    };
+    const update = () => {
+      cancelAnimationFrame(frame);
+      lastTime = 0;
+      if (!motion.matches && !document.hidden) frame = requestAnimationFrame(animate);
+      else paint(0);
+    };
+    resize(); update();
+    window.addEventListener('resize', resize, { passive: true });
+    motion.addEventListener('change', update);
+    document.addEventListener('visibilitychange', update);
+    window.addEventListener('pagehide', () => cancelAnimationFrame(frame));
+    window.addEventListener('pageshow', update);
+  }
+</script>

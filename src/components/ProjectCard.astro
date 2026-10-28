@@ -1,0 +1,13 @@
+---
+import type { projects } from '../data/portfolio';
+interface Props { project: (typeof projects)[number]; index: number; }
+const { project, index } = Astro.props;
+---
+<article class="project-card">
+  <div class="project-meta"><span>{project.category}</span><span class:list={['status', { 'status-progress': project.status === 'Ongoing' || project.status === 'In development' }]}>{project.status}</span></div>
+  <span class="project-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+  <h3>{project.name}</h3>
+  <p>{project.description}</p>
+  <ul class="tags" aria-label="Project focus">{project.focus.map(item => <li>{item}</li>)}</ul>
+  <p class="source-note">Public source unavailable</p>
+</article>

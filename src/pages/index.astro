@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Navigation from '../components/Navigation.astro';
+import CosmicBackground from '../components/CosmicBackground.astro';
+import TechnologyStack from '../components/TechnologyStack.astro';
+import LearningPaths from '../components/LearningPaths.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { profile, projects, securityAreas } from '../data/portfolio';
+---
+<Layout>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <CosmicBackground />
+  <Navigation />
+  <main id="main-content">
+    <section id="home" class="hero container" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <p class="availability"><span aria-hidden="true"></span> Open to internships &amp; collaboration</p>
+        <p class="eyebrow">Software development · Cybersecurity</p>
+        <h1 id="hero-title">Hatem Taleb<span class="accent">.</span></h1>
+        <p class="hero-subtitle">Building practical software.<br />Thinking about security.</p>
+        <p class="hero-description">Computer Science student at ESI SBA, Algeria. I focus on backend engineering and business applications, with a cybersecurity background shaped by projects, labs, and CTFs.</p>
+        <div class="actions"><a class="button button-primary" href="#projects">Explore projects <Icon name="arrow-right" /></a><a class="button button-secondary" href="#contact">Get in touch</a><a class="social-link" href={profile.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> GitHub <span class="sr-only">(opens in a new tab)</span></a></div>
+        <p class="hero-location"><Icon name="map-pin" size={15} /> Algeria <span aria-hidden="true">/</span> Computer Science · ESI SBA</p>
+      </div>
+      <div class="hero-identity"><div class="logo-frame"><img src="/favicon.png" width="200" height="234" alt="Hatem Taleb personal H logo" fetchpriority="high" /></div><p>Build. Understand. Improve.</p><span class="identity-line" aria-hidden="true"></span></div>
+      <a class="scroll-link" href="#about">A little about me <Icon name="chevron-down" size={17} /></a>
+    </section>
+
+    <section id="about" class="section" aria-labelledby="about-title"><div class="container about-layout">
+      <div class="section-heading"><p class="eyebrow">About</p><h2 id="about-title">I like understanding<br />what’s underneath.</h2></div>
+      <div class="prose"><p>I’m a Computer Science student at <strong>ESI SBA</strong> who enjoys both building software and understanding how systems work internally. My work centers on backend development and practical applications for business and healthcare workflows.</p><p>Security is part of how I approach engineering: asking how data moves, where trust boundaries sit, and what happens when an assumption fails. I learn through projects, practical penetration testing labs, and CTF challenges.</p><p>I’m looking for a <strong>software development or cybersecurity internship</strong> where I can contribute, learn from a team, and grow toward working on production applications.</p></div>
+    </div></section>
+
+    <TechnologyStack />
+    <LearningPaths />
+
+    <section id="experience" class="section" aria-labelledby="experience-title"><div class="container">
+      <div class="section-heading"><p class="eyebrow">Experience &amp; education</p><h2 id="experience-title">Learning through practice.</h2></div>
+      <div class="timeline">
+        <article class="timeline-entry"><p class="timeline-date">Education</p><div><h3>Computer Science</h3><p class="organization">ESI SBA · Algeria</p><p>Current student, building a foundation in software development and systems.</p></div></article>
+        <article class="timeline-entry"><p class="timeline-date"><time datetime="2025-06">June 2025</time></p><div><h3>Software Development Intern</h3><p class="organization">SARL Santé Soft</p><p>Previous software development internship.</p></div></article>
+      </div>
+    </div></section>
+
+    <section id="projects" class="section" aria-labelledby="projects-title"><div class="container">
+      <div class="section-heading"><p class="eyebrow">Selected projects</p><h2 id="projects-title">Software for real workflows.</h2><p>Business and healthcare applications, with ongoing work clearly marked.</p></div>
+      <div class="projects-grid">{projects.map((project, index) => <ProjectCard project={project} index={index} />)}</div>
+      <a class="text-link" href={profile.github} target="_blank" rel="noopener noreferrer">Browse public repositories <Icon name="external-link" size={16} /></a>
+    </div></section>
+
+    <section id="security" class="section" aria-labelledby="security-title"><div class="container">
+      <div class="section-heading"><p class="eyebrow">Security practice</p><h2 id="security-title">Learning how systems break.</h2><p>Personal labs, experiments, and CTF participation. A space to practice investigation and document what I learn.</p></div>
+      <div class="security-grid">{securityAreas.map(area => <article><span class="security-mark" aria-hidden="true">↳</span><h3>{area.name}</h3><p>{area.description}</p></article>)}</div>
+      <p class="ctf-team">I participate in CTFs with <a href="https://ctftime.org/team/373233/" target="_blank" rel="noopener noreferrer">Vuln3ra <Icon name="external-link" size={14} /></a>. Find our team and event participation on CTFtime.</p>
+      <div class="security-resources"><a class="button button-secondary" href="https://ctftime.org/team/373233/" target="_blank" rel="noopener noreferrer">Vuln3ra on CTFtime <Icon name="external-link" size={15} /></a><a class="button button-secondary" href="https://github.com/hatem12345th/ctf-writeups" target="_blank" rel="noopener noreferrer"><Icon name="github" /> CTF write-ups <Icon name="external-link" size={15} /></a><a class="text-link" href="https://github.com/hatem12345th/ctf-blog" target="_blank" rel="noopener noreferrer">CTF blog repository <Icon name="external-link" size={15} /></a></div>
+    </div></section>
+
+    <section id="contact" class="section contact-section" aria-labelledby="contact-title"><div class="container contact-layout">
+      <div><p class="eyebrow">Contact</p><h2 id="contact-title">Let’s work on<br />something useful.</h2><p>I’m looking for software development and cybersecurity internships. If you have an opportunity or a project to discuss, I’d like to hear about it.</p><a class="button button-primary" href={`mailto:${profile.email}`}><Icon name="mail" /> Email me <Icon name="arrow-right" /></a></div>
+      <div class="contact-details"><div><span>Email</span><a href={`mailto:${profile.email}`}>{profile.email}</a></div><div><span>Elsewhere</span><a href={profile.github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={17} /> GitHub <Icon name="external-link" size={14} /></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer"><Icon name="linkedin" size={17} /> LinkedIn <Icon name="external-link" size={14} /></a></div><div><span>Based in</span><p>Algeria</p></div></div>
+    </div></section>
+  </main>
+  <footer class="container site-footer"><p>© {new Date().getFullYear()} Hatem Taleb</p><a href="#home">Back to top ↑</a></footer>
+</Layout>

@@ -1,0 +1,13 @@
+---
+import { stackGroups } from '../data/portfolio';
+---
+<section id="skills" class="section" aria-labelledby="skills-title">
+  <div class="container">
+    <div class="section-heading"><p class="eyebrow">My toolkit</p><h2 id="skills-title">Tools I build with.</h2><p>Practical experience from application projects. No proficiency scores, just the tools behind the work.</p></div>
+    <div class="stack-groups">
+      {stackGroups.map(group => <div class="stack-group"><h3>{group.name}</h3><ul>{group.tools.map(tool => <li><img src={`/icons/${tool.icon.split('/')[0]}.svg`} alt="" width="24" height="24" loading="lazy" decoding="async" /><span>{tool.name}</span></li>)}</ul></div>)}
+    </div>
+    <p class="stack-note"><strong>Desktop &amp; Android:</strong> Building desktop applications with Go and Wails 3, and packaging web builds (<code>dist/</code>) into Android APKs with Capacitor and native Android tooling.</p>
+    <p class="stack-note"><strong>Workflow:</strong> Git, GitHub, and Linux. <a class="learning-jump" href="#learning">Explore my current learning paths →</a></p>
+  </div>
+</section>

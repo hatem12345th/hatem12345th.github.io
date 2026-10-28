@@ -1,0 +1,41 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/portfolio';
+const links = ['Home', 'About', 'Experience', 'Projects', 'Contact'];
+---
+<header class="site-header">
+  <div class="container nav-inner">
+    <a class="brand" href="#home" aria-label="Hatem Taleb home">
+      <img src="/favicon.png" alt="" width="28" height="32" />
+      <span>Hatem Taleb<span class="brand-dot">.</span></span>
+    </a>
+    <nav aria-label="Main navigation" id="main-navigation">
+      {links.map(link => <a href={`#${link.toLowerCase()}`}>{link}</a>)}
+    </nav>
+    <a class="nav-github" href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile (opens in a new tab)"><Icon name="github" size={20} /></a>
+    <button id="menu-toggle" class="menu-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" aria-label="Open navigation">
+      <span class="menu-open"><Icon name="menu" size={22} /></span>
+      <span class="menu-close"><Icon name="x" size={22} /></span>
+    </button>
+  </div>
+</header>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#menu-toggle');
+  const navigation = document.querySelector<HTMLElement>('#main-navigation');
+  if (button && navigation) {
+    const setOpen = (open: boolean) => {
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+      navigation.classList.toggle('is-open', open);
+    };
+    button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+    navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') { setOpen(false); button.focus(); }
+    });
+    document.addEventListener('click', event => {
+      if (event.target instanceof Node && !navigation.contains(event.target) && !button.contains(event.target)) setOpen(false);
+    });
+    window.matchMedia('(min-width: 801px)').addEventListener('change', () => setOpen(false));
+  }
+</script>
